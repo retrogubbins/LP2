@@ -1,0 +1,34 @@
+Sound
+Sound does not work with an HDMI monitor
+
+This is caused by some computer monitors which select DVI mode even if an HDMI cable is connected. This fix may be necessary even if other HDMI devices work perfectly on the same monitor (or TV)!
+
+Edit the configuration file - see the instructions at R-Pi_ConfigurationFile.
+
+Add the following line to the configuration file:
+
+hdmi_drive=2
+
+This will force it to select HDMI mode.
+Sound does not work at all, or in some applications
+
+In Debian Squeeze, sound is disabled by default because the ALSA sound driver is still "alpha" (not fully tested) on the R-Pi. To try out sound, from the command prompt before "startx", type
+
+ sudo apt-get install alsa-utils
+ sudo modprobe snd_bcm2835
+
+On Debian Wheezy, snd_bm2835 is enabled, by default, do that step is not necessary. Next try:
+
+ sudo aplay /usr/share/sounds/alsa/Front_Center.wav
+
+By default output will be automatic (hdmi if hdmi supports audio, otherwise analogue). You can force it with:
+
+ sudo amixer cset numid=3 <n>
+
+where n is 0=auto, 1=headphones, 2=hdmi.
+
+With recent firmware, you can build hello_audio with:
+
+ cd /opt/vc/src/hello_pi/
+ ./rebuild.sh
+ cd hello_audio
